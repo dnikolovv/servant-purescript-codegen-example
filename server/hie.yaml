@@ -1,0 +1,13 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "gentypes-server:lib"
+
+    - path: "./app/Main.hs"
+      component: "gentypes-server:exe:gentypes-server-exe"
+
+    - path: "./app/Paths_gentypes_server.hs"
+      component: "gentypes-server:exe:gentypes-server-exe"
+
+    - path: "./test"
+      component: "gentypes-server:test:gentypes-server-test"
