@@ -24,6 +24,10 @@ dependencies:
 - rio
 - aeson
 - mtl
+- wai
+- warp
+- random
+- uuid
 - generic-lens
 - servant
 - servant-server

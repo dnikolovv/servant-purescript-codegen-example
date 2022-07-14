@@ -7,6 +7,7 @@
 module GenTypesDemo.API.Types where
 
 import Data.Aeson
+import Data.UUID (UUID)
 import RIO
 import Servant (FromHttpApiData)
 
@@ -38,7 +39,7 @@ data UpdateUserRequest = UpdateUserRequest
   deriving (Generic)
   deriving anyclass (ToJSON, FromJSON)
 
-newtype UserId = UserId Int
+newtype UserId = UserId UUID
   deriving (Generic)
   deriving newtype (Eq, Hashable, ToJSON, FromJSON, FromHttpApiData)
 
