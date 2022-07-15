@@ -1,4 +1,4 @@
-# Haskell Servant + PureScript React Codegen :heart:
+# Haskell Servant + PureScript React with Code Generation :heart:
 
 ![Demo](demo.gif)
 
@@ -130,4 +130,51 @@ You can now use `listUsers` in your application code without duplicating any typ
 
 # Known issues/quirks
 
+## Endpoints using `NoContent`
+
+For some reason if you use `NoContent` instead of `()` on your Servant routes the API call will result in a deserialization error on the PureScript side.
+
+## `Required` `QueryParams` don't become required
+
+If you're using any `QueryParams` with `'[Required]`, the PureScript code generation will not pick it up and you'll still have them as optional in `ServerAPI.purs`.
+
+## Haskell `newtype`s with a named field will not deserialize properly
+
+For example if you have something like:
+
+```haskell
+newtype Username = Username { unUsername :: Text }
+```
+
+this will fail to deserialize. A usable workaround is to define `unUsername` separately like so:
+
+```haskell
+newtype Username = Username Text
+
+unUsername :: Username -> Text
+unUsername = coerce
+```
+
+# What's not shown (yet)
+
+* Authentication tokens
+* Handling polymorphic types
+
 # Running it locally
+
+## server
+
+In `./server` (assuming you have `stack` installed)
+
+```
+./run.sh
+```
+
+## client
+
+In `./client` (assuming you have `yarn` installed)
+
+```
+yarn install
+yarn run start
+```
