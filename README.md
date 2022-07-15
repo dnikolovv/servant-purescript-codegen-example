@@ -130,6 +130,8 @@ You can now use `listUsers` in your application code without duplicating any typ
 
 # Known issues/quirks
 
+I haven't yet found any dealbreakers, and most of these issues can be fixed with a PR, but still.
+
 ## Endpoints using `NoContent`
 
 For some reason if you use `NoContent` instead of `()` on your Servant routes the API call will result in a deserialization error on the PureScript side.
