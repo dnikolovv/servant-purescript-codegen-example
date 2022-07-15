@@ -1,0 +1,55 @@
+{
+  "name": "types-generation",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fontsource/inter": "^4.5.11",
+    "aos": "^2.3.4",
+    "dayjs": "^1.10.8",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-toastify": "^9.0.5",
+    "url": "^0.11.0",
+    "uuid": "^8.3.2",
+    "web-vitals": "^2.1.4",
+    "xhr2": "^0.2.1"
+  },
+  "scripts": {
+    "start": "NODE_ENV=development npx spago build && parcel dev/index.html",
+    "build": "npx spago build",
+    "bundle": "NODE_ENV=production rm -rf dist && yarn bundle:build && yarn bundle:dce && yarn bundle:parcel && yarn bundle:static",
+    "bundle:static": "cp -r static/* dist",
+    "bundle:build": "npx spago build --purs-args '--codegen corefn'",
+    "bundle:dce": "zephyr -f Main.main",
+    "bundle:parcel": "parcel build dev/index.html --no-source-maps",
+    "css": "npx tailwindcss -i ./src/input.css -o ./src/styles.css --watch",
+    "serve-prod": "npx http-server dist -o -p 1234"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "buffer": "^6.0.3",
+    "parcel": "^2.3.2",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "postcss": "^8.4.6",
+    "prettier": "2.5.1",
+    "process": "^0.11.10",
+    "purescript": "^0.14.7",
+    "purty": "^7.0.0",
+    "querystring-es3": "^0.2.1",
+    "serve-static": "^1.15.0",
+    "tailwindcss": "^3.0.23",
+    "zephyr": "https://github.com/jonasbuntinx/zephyr.git"
+  }
+}

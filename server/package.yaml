@@ -1,14 +1,14 @@
-name:                gentypes-server
-version:             0.1.0.0
-github:              "githubuser/gentypes-server"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2022 Author name here"
+name: gentypes-server
+version: 0.1.0.0
+github: "dnikolovv/gentypes-server"
+license: BSD3
+author: "Dobromir Nikolov"
+maintainer: "example@example.com"
+copyright: "2022 Dobromir Nikolov"
 
 extra-source-files:
-- README.md
-- ChangeLog.md
+  - README.md
+  - ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -17,20 +17,25 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/gentypes-server#readme>
+description: Please see the README on GitHub at <https://github.com/githubuser/gentypes-server#readme>
 
 dependencies:
-- base >= 4.7 && < 5
-- rio
-- aeson
-- mtl
-- wai
-- warp
-- random
-- uuid
-- generic-lens
-- servant
-- servant-server
+  - base >= 4.7 && < 5
+  - rio
+  - aeson
+  - mtl
+  - wai
+  - wai-extra
+  - wai-cors
+  - warp
+  - random
+  - uuid
+  - generic-lens
+  - servant
+  - servant-errors
+  - servant-server
+  - servant-purescript
+  - purescript-bridge
 
 library:
   source-dirs: src
@@ -40,23 +45,33 @@ default-extensions:
   - OverloadedStrings
 
 executables:
-  gentypes-server-exe:
-    main:                Main.hs
-    source-dirs:         app
+  gentypes-codegen:
+    main: Main.hs
+    source-dirs: codegen
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - gentypes-server
+      - gentypes-server
+
+  gentypes-server-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - gentypes-server
 
 tests:
   gentypes-server-test:
-    main:                Spec.hs
-    source-dirs:         test
+    main: Spec.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - gentypes-server
+      - gentypes-server

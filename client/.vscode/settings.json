@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "**/.spago": true,
+    "**/output": true
+  }
+}

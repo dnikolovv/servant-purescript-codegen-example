@@ -34,7 +34,11 @@ packages:
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
 #
-# extra-deps:
+extra-deps:
+  - git: https://github.com/input-output-hk/purescript-bridge.git
+    commit: 47a1f11825a0f9445e0f98792f79172efef66c00
+  - git: https://github.com/input-output-hk/servant-purescript.git
+    commit: 002e172173ad2f2f69f98a3b56b7312364f23afe
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a

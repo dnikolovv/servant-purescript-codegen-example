@@ -9,7 +9,16 @@ module GenTypesDemo.API.Types where
 import Data.Aeson
 import Data.UUID (UUID)
 import RIO
+import RIO.Time (UTCTime)
 import Servant (FromHttpApiData)
+import GenTypesDemo.API.Types.NotEmptyText (NotEmptyText)
+
+data Error = Error
+  { error :: Text
+  , status :: Int
+  }
+  deriving (Generic)
+  deriving anyclass (ToJSON, FromJSON)
 
 data CreateUserRequest = CreateUserRequest
   { email :: Email,
@@ -27,7 +36,8 @@ data User = User
 
 data UserData = UserData
   { email :: Email,
-    username :: Username
+    username :: Username,
+    created :: CreatedAt
   }
   deriving (Generic)
   deriving anyclass (ToJSON, FromJSON)
@@ -43,10 +53,14 @@ newtype UserId = UserId UUID
   deriving (Generic)
   deriving newtype (Eq, Hashable, ToJSON, FromJSON, FromHttpApiData)
 
+newtype CreatedAt = CreatedAt UTCTime
+  deriving (Generic)
+  deriving newtype (ToJSON, FromJSON, Eq, Ord)
+
 newtype Email = Email Text
   deriving (Generic)
   deriving newtype (ToJSON, FromJSON)
 
-newtype Username = Username Text
+newtype Username = Username NotEmptyText
   deriving (Generic)
   deriving newtype (ToJSON, FromJSON)

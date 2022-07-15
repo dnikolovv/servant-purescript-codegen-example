@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+html, body {
+  @apply min-h-screen m-0
+}
+
+#root {
+  @apply min-h-screen h-full
+}

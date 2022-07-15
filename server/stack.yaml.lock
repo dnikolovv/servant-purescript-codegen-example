@@ -3,7 +3,29 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    name: purescript-bridge
+    version: 0.14.0.0
+    git: https://github.com/input-output-hk/purescript-bridge.git
+    pantry-tree:
+      size: 2202
+      sha256: f064953b17907940cc3df62ea778626372747b5879fcf0488c9ae377cfc98fee
+    commit: 47a1f11825a0f9445e0f98792f79172efef66c00
+  original:
+    git: https://github.com/input-output-hk/purescript-bridge.git
+    commit: 47a1f11825a0f9445e0f98792f79172efef66c00
+- completed:
+    name: servant-purescript
+    version: 0.9.0.2
+    git: https://github.com/input-output-hk/servant-purescript.git
+    pantry-tree:
+      size: 1204
+      sha256: ee672215ec28d18b333f885cd1767943c4260a81fc0cfaf9844a6e6caf34c584
+    commit: 002e172173ad2f2f69f98a3b56b7312364f23afe
+  original:
+    git: https://github.com/input-output-hk/servant-purescript.git
+    commit: 002e172173ad2f2f69f98a3b56b7312364f23afe
 snapshots:
 - completed:
     size: 590100
