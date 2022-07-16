@@ -1,10 +1,13 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeApplications #-}
 
 module GenTypesDemo.Run where
 
 import qualified Data.UUID as UUID
 import GenTypesDemo.API.Definition (AppM (runAppM), UsersAPI, server)
-import GenTypesDemo.API.Types (CreatedAt (CreatedAt), Email (Email), User (User), UserData (UserData), UserId (UserId), Username (Username))
+import GenTypesDemo.API.Types (CreatedAt (CreatedAt), Email (Email), UserData (UserData), UserId (UserId), Username (Username))
+import GenTypesDemo.API.Types.NotEmptyText (unsafeMkNotEmptyText)
 import Network.Wai (Middleware)
 import Network.Wai.Handler.Warp (defaultSettings, runSettings, setBeforeMainLoop, setPort)
 import Network.Wai.Middleware.Cors
@@ -12,14 +15,13 @@ import Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import Network.Wai.Middleware.Servant.Errors (errorMwDefJson)
 import RIO
 import qualified RIO.HashMap as HM
-import RIO.State (evalStateT)
 import RIO.Time (getCurrentTime)
-import Servant.Server (hoistServer, serve)
+import Servant.Auth.Server (CookieSettings, JWTSettings, defaultCookieSettings, defaultJWTSettings, fromSecret)
+import Servant.Server (Context (EmptyContext, (:.)), HasServer (hoistServerWithContext), serveWithContext)
 import System.IO (print)
-import GenTypesDemo.API.Types.NotEmptyText (unsafeMkNotEmptyText)
 
 run :: IO ()
-run =
+run = do
   initializeUsers
     >>= runSettings
       ( setPort port $
@@ -32,7 +34,12 @@ run =
       . logStdoutDev
       . waiApp
   where
-    waiApp users = serve usersApi (hoistServer usersApi (flip runReaderT users . runAppM) server)
+    waiApp users = do
+      let jwtCfg = defaultJWTSettings (fromSecret . fromString $ "this secret is kept very very securely")
+          cookieCfg = defaultCookieSettings
+          context = cookieCfg :. jwtCfg :. EmptyContext
+
+      serveWithContext usersApi context (hoistServerWithContext usersApi (Proxy :: Proxy '[CookieSettings, JWTSettings]) (flip runReaderT users . runAppM) server)
     port = 3005
     allowedCors = (["http://localhost:1234"], True)
     usersApi = Proxy @UsersAPI

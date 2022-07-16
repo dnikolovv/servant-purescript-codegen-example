@@ -13,6 +13,7 @@ import Data.Foldable (fold)
 import Data.HTTP.Method (Method(..))
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple)
+import GenTypesDemo.API.Auth (AuthorizationHeader)
 import GenTypesDemo.API.Types (CreateUserRequest, UpdateUserRequest, User, UserId)
 import Servant.PureScript (AjaxError, class MonadAjax, flagQueryPairs, paramListQueryPairs, paramQueryPairs, request, toHeader, toPathSegment)
 import URI (RelativePart(..), RelativeRef(..))
@@ -122,16 +123,17 @@ putUserByUserId reqBody userId =
 deleteUserByUserId ::
   forall m.
   MonadAjax Api m =>
+  Maybe AuthorizationHeader ->
   UserId ->
   m (Either (AjaxError JsonDecodeError Json) Unit)
-deleteUserByUserId userId =
+deleteUserByUserId authorization userId =
   request Api req
   where
   req = { method, uri, headers, content, encode, decode }
   method = Left DELETE
   uri = RelativeRef relativePart query Nothing
   headers = catMaybes
-    [
+    [ RequestHeader "Authorization" <<< toHeader <$> authorization
     ]
   content = Nothing
   encode = E.encode encoder

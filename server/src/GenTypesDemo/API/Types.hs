@@ -63,4 +63,4 @@ newtype Email = Email Text
 
 newtype Username = Username NotEmptyText
   deriving (Generic)
-  deriving newtype (ToJSON, FromJSON)
+  deriving newtype (Show, ToJSON, FromJSON)

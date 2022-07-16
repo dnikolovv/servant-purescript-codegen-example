@@ -9,17 +9,17 @@
 module GenTypesDemo.API.Definition where
 
 import Control.Monad.Error.Class
+import qualified Data.Aeson as JSON
 import Data.Generics.Product (HasType (typed))
+import Data.List (sortOn)
 import Data.UUID.V4 (nextRandom)
+import GenTypesDemo.API.Auth (APIUser)
 import GenTypesDemo.API.Types
 import RIO
 import qualified RIO.HashMap as HM
-import RIO.State
 import RIO.Time (getCurrentTime)
 import Servant
-import System.Random (randomRIO)
-import Data.List (sortOn)
-import qualified Data.Aeson as JSON
+import Servant.Auth.Server
 
 -- Known issues
 -- NoContent endpoints will fail deserialization because the PureScript front-end will expect an [] to deserialize into Unit
@@ -27,14 +27,21 @@ import qualified Data.Aeson as JSON
 -- newtypes with named fields don't get serialized properly e.g. Username = Username { unUsername :: Text }
 
 type UsersAPI =
+  PublicAPI
+    :<|> ProtectedAPI
+
+type PublicAPI =
   "users" :> Get '[JSON] [User]
     :<|> ( "user"
              :> ( Capture "userId" UserId :> Get '[JSON] User
                     :<|> ReqBody '[JSON] CreateUserRequest :> Post '[JSON] User
                     :<|> Capture "userId" UserId :> ReqBody '[JSON] UpdateUserRequest :> PutNoContent
-                    :<|> Capture "userId" UserId :> Delete '[JSON] ()
                 )
          )
+
+type ProtectedAPI =
+  Auth '[JWT] APIUser
+    :> ("user" :> Capture "userId" UserId :> Delete '[JSON] ())
 
 type UsersTable = IORef (HashMap UserId UserData)
 
@@ -50,20 +57,29 @@ newtype AppM a = AppM {runAppM :: ReaderT UsersTable Servant.Handler a}
 
 server :: ServerT UsersAPI AppM
 server =
-  getAllUsers
-    :<|> getUser
-    :<|> createUser
-    :<|> updateUser
-    :<|> deleteUser
+  publicServer
+    :<|> protectedServer
   where
+    publicServer =
+      getAllUsers
+        :<|> getUser
+        :<|> createUser
+        :<|> updateUser
+
+    protectedServer (Authenticated _) uId =
+      deleteUser uId
+    protectedServer _ _ =
+      throwError $ servantErrorWithText err401 "Unauthorized."
+
     getAllUsers =
       sortOn (created . info) . map (uncurry User) . HM.toList <$> (ask >>= readIORef)
     getUser uId = do
       userMay <- lookupUser uId
       case userMay of
         Just u -> pure $ User uId u
-        Nothing -> throwError $
-          servantErrorWithText err404 "User not found."
+        Nothing ->
+          throwError $
+            servantErrorWithText err404 "User not found."
     createUser CreateUserRequest {..} = do
       newUserId <- UserId <$> liftIO nextRandom
       now <- CreatedAt <$> getCurrentTime
@@ -98,7 +114,7 @@ server =
         if result
           then pure ()
           else throwError err
-    
+
     servantErrorWithText ::
       Servant.ServerError ->
       Text ->
@@ -110,6 +126,6 @@ server =
         }
       where
         errorBody code = JSON.encode $ Error msg code
-    
+
     jsonHeaders =
       (fromString "Content-Type", "application/json;charset=utf-8")

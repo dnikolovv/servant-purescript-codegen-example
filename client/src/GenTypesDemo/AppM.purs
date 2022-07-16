@@ -17,6 +17,7 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
 import Effect.Class.Console as Console
 import Effect.Now as Now
+import GenTypesDemo.API.Auth (AuthorizationHeader(..))
 import GenTypesDemo.API.Error (APIError(..))
 import GenTypesDemo.Capability.Global (GlobalEvent(..), GlobalIO, emitGlobalAction, emitGlobalEvent)
 import GenTypesDemo.Capability.Global (class MonadGlobal)
@@ -136,7 +137,13 @@ instance monadRoutingAppM :: MonadRouting AppM where
 instance monadUsersAppM :: MonadUsers AppM where
   listUsers = callApi ServerAPI.getUsers
   newUser = callApi <<< ServerAPI.postUser
-  deleteUser = callApi <<< ServerAPI.deleteUserByUserId
+  deleteUser uId = getAuthHeader >>= \authHeader ->
+    callApi $ ServerAPI.deleteUserByUserId authHeader uId
+
+getAuthHeader :: AppM (Maybe AuthorizationHeader)
+getAuthHeader =
+  -- Imagine you're reading this from some magical place
+  pure $ Just $ AuthorizationHeader "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJleHAiOjE5NzM1NDg4MDB9.Li3xg_6ikx7PQlPR6ca_WB6KV3xJnBnjDnB3AbQUFWI"
 
 callApi ::
   forall m result.

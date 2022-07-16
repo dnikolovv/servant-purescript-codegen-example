@@ -32,10 +32,13 @@ dependencies:
   - uuid
   - generic-lens
   - servant
+  - servant-auth-server
   - servant-errors
   - servant-server
+  - servant-foreign
   - servant-purescript
   - purescript-bridge
+  - jose
 
 library:
   source-dirs: src
@@ -43,6 +46,10 @@ library:
 default-extensions:
   - NoImplicitPrelude
   - OverloadedStrings
+
+ghc-options:
+  - -Wall
+  - -Werror
 
 executables:
   gentypes-codegen:

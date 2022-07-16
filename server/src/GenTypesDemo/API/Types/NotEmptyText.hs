@@ -16,8 +16,7 @@ where
 import Data.Aeson
   ( FromJSON (parseJSON),
     ToJSON,
-    Value (Object, String),
-    (.:),
+    Value (String),
   )
 import Data.Aeson.Types (typeMismatch)
 import GHC.Base (coerce)

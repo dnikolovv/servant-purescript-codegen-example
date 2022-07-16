@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      GenTypesDemo.API.Auth
       GenTypesDemo.API.CodeGen
       GenTypesDemo.API.Definition
       GenTypesDemo.API.Types
@@ -37,16 +38,20 @@ library
   default-extensions:
       NoImplicitPrelude
       OverloadedStrings
+  ghc-options: -Wall -Werror
   build-depends:
       aeson
     , base >=4.7 && <5
     , generic-lens
+    , jose
     , mtl
     , purescript-bridge
     , random
     , rio
     , servant
+    , servant-auth-server
     , servant-errors
+    , servant-foreign
     , servant-purescript
     , servant-server
     , uuid
@@ -65,18 +70,21 @@ executable gentypes-codegen
   default-extensions:
       NoImplicitPrelude
       OverloadedStrings
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , generic-lens
     , gentypes-server
+    , jose
     , mtl
     , purescript-bridge
     , random
     , rio
     , servant
+    , servant-auth-server
     , servant-errors
+    , servant-foreign
     , servant-purescript
     , servant-server
     , uuid
@@ -95,18 +103,21 @@ executable gentypes-server-exe
   default-extensions:
       NoImplicitPrelude
       OverloadedStrings
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , generic-lens
     , gentypes-server
+    , jose
     , mtl
     , purescript-bridge
     , random
     , rio
     , servant
+    , servant-auth-server
     , servant-errors
+    , servant-foreign
     , servant-purescript
     , servant-server
     , uuid
@@ -126,18 +137,21 @@ test-suite gentypes-server-test
   default-extensions:
       NoImplicitPrelude
       OverloadedStrings
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , generic-lens
     , gentypes-server
+    , jose
     , mtl
     , purescript-bridge
     , random
     , rio
     , servant
+    , servant-auth-server
     , servant-errors
+    , servant-foreign
     , servant-purescript
     , servant-server
     , uuid
