@@ -2,7 +2,7 @@
 
 ![Demo](demo.gif)
 
-A demo application showcasing a Haskell Servant server + a PureScript React (`react-basic-hooks`) client with code generation.
+A demo application showcasing a Haskell Servant server + a PureScript React (`react-basic-hooks` and `react-halo`) client with code generation.
 
 Running `/server/codegen.sh` will generate the API types together with a client, visible in [Types.purs](./client/src/GenTypesDemo/API/Types.purs) and [ServerAPI.purs](./client/src/ServerAPI.purs).
 
