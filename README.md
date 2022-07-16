@@ -159,7 +159,6 @@ unUsername = coerce
 
 # What's not shown (yet)
 
-* Authentication tokens
 * Handling polymorphic types
 
 # Running it locally
