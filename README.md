@@ -8,6 +8,8 @@ Running `/server/codegen.sh` will generate the API types together with a client,
 
 To achieve this the project uses [purescript-bridge](https://github.com/input-output-hk/purescript-bridge) and [servant-purescript](https://github.com/input-output-hk/servant-purescript).
 
+For the application logic this project uses [effectful](https://hackage.haskell.org/package/effectful), but there's an `mtl` version on the `mtl` branch.
+
 # Suggested workflow
 
 This setup enables an extremely productive workflow as it takes very little effort to change things while being confident your client to server communication works properly.
