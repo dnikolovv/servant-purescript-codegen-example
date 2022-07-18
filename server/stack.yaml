@@ -39,6 +39,9 @@ extra-deps:
     commit: 47a1f11825a0f9445e0f98792f79172efef66c00
   - git: https://github.com/input-output-hk/servant-purescript.git
     commit: 002e172173ad2f2f69f98a3b56b7312364f23afe
+  - effectful-1.0.0.0
+  - effectful-core-1.0.0.0@sha256:04db3df6e435b1df037b63064e3b1bd3f7f915785b4d1b2a9f632f9368821fa2,3675
+  - effectful-th-1.0.0.0@sha256:46842eeea2ca1ca2ab8a86302de84ec1367f4cb047e49256f386aec123b7f82b,2428
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a

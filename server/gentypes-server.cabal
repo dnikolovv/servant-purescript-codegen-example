@@ -15,9 +15,6 @@ copyright:      2022 Dobromir Nikolov
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
-extra-source-files:
-    README.md
-    ChangeLog.md
 
 source-repository head
   type: git
@@ -28,6 +25,7 @@ library
       GenTypesDemo.API.Auth
       GenTypesDemo.API.CodeGen
       GenTypesDemo.API.Definition
+      GenTypesDemo.API.ManageUsers
       GenTypesDemo.API.Types
       GenTypesDemo.API.Types.NotEmptyText
       GenTypesDemo.Run
@@ -42,6 +40,9 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , effectful
+    , effectful-th
+    , exceptions
     , generic-lens
     , jose
     , mtl
@@ -74,6 +75,9 @@ executable gentypes-codegen
   build-depends:
       aeson
     , base >=4.7 && <5
+    , effectful
+    , effectful-th
+    , exceptions
     , generic-lens
     , gentypes-server
     , jose
@@ -107,6 +111,9 @@ executable gentypes-server-exe
   build-depends:
       aeson
     , base >=4.7 && <5
+    , effectful
+    , effectful-th
+    , exceptions
     , generic-lens
     , gentypes-server
     , jose
@@ -141,6 +148,9 @@ test-suite gentypes-server-test
   build-depends:
       aeson
     , base >=4.7 && <5
+    , effectful
+    , effectful-th
+    , exceptions
     , generic-lens
     , gentypes-server
     , jose
