@@ -25,6 +25,7 @@ library
       GenTypesDemo.API.Auth
       GenTypesDemo.API.CodeGen
       GenTypesDemo.API.Definition
+      GenTypesDemo.API.DomainError
       GenTypesDemo.API.ManageUsers
       GenTypesDemo.API.Types
       GenTypesDemo.API.Types.NotEmptyText

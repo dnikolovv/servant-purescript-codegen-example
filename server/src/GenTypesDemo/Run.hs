@@ -17,6 +17,7 @@ import Effectful
 import Effectful.Dispatch.Dynamic (interpret)
 import Effectful.Error.Static (Error, runErrorNoCallStack, throwError)
 import GenTypesDemo.API.Definition (UsersAPI, UsersTable, server)
+import GenTypesDemo.API.DomainError (DomainError (NotFound, Unauthorized, ValidationError))
 import GenTypesDemo.API.ManageUsers (ManageUsers (DeleteUser, GetAllUsers, GetUser, NewUser, UpdateUser), getUser)
 import GenTypesDemo.API.Types (CreatedAt (CreatedAt), Email (Email), User (User), UserData (UserData), UserId (UserId), Username (Username), created, info)
 import qualified GenTypesDemo.API.Types as API
@@ -31,7 +32,7 @@ import qualified RIO.HashMap as HM
 import RIO.Time (getCurrentTime)
 import qualified Servant
 import Servant.Auth.Server (CookieSettings, JWTSettings, defaultCookieSettings, defaultJWTSettings, fromSecret)
-import Servant.Server (Context (EmptyContext, (:.)), HasServer (hoistServerWithContext), ServerError (errBody, errHTTPCode, errHeaders), err400, err404, serveWithContext)
+import Servant.Server (Context (EmptyContext, (:.)), HasServer (hoistServerWithContext), ServerError (errBody, errHTTPCode, errHeaders), err400, err401, err404, serveWithContext)
 import System.IO (print)
 
 run :: IO ()
@@ -89,14 +90,20 @@ run = do
 
     unsafeUUIDFromText = fromMaybe (error "nope") . UUID.fromText
 
-effToHandler :: UsersTable -> Eff [ManageUsers, Error ServerError, IOE] a -> Servant.Handler a
+effToHandler :: UsersTable -> Eff [ManageUsers, Error DomainError, IOE] a -> Servant.Handler a
 effToHandler usersRef m = do
-  result <- liftIO . runEff . runErrorNoCallStack @ServerError . runInMemoryUserStorage usersRef $ m
-  Servant.Handler $ ExceptT (pure result)
+  result <- liftIO . runEff . runErrorNoCallStack @DomainError . runInMemoryUserStorage usersRef $ m
+
+  Servant.Handler $ ExceptT (pure . mapLeft toServerError $ result)
+  where
+    toServerError = \case
+      ValidationError t -> servantErrorWithText err400 t
+      NotFound t -> servantErrorWithText err404 t
+      Unauthorized -> servantErrorWithText err401 "Unauthorized."
 
 runInMemoryUserStorage ::
   ( IOE :> es,
-    Error ServerError :> es
+    Error DomainError :> es
   ) =>
   UsersTable ->
   Eff (ManageUsers : es) a ->
@@ -109,8 +116,7 @@ runInMemoryUserStorage usersRef = interpret $ \_ -> \case
     case userMay of
       Just u -> pure $ User uId u
       Nothing ->
-        throwError $
-          servantErrorWithText err404 "User not found."
+        throwError $ NotFound "User not found."
   NewUser email username -> do
     newUserId <- UserId <$> liftIO UUID.nextRandom
     now <- CreatedAt <$> getCurrentTime
@@ -121,7 +127,7 @@ runInMemoryUserStorage usersRef = interpret $ \_ -> \case
     modifyIORef' usersRef (HM.delete uId) >> pure ()
   UpdateUser uId newEmail newUsername -> do
     validate (isJust <$> lookupUser uId) $
-      servantErrorWithText err400 "Unexisting user."
+      ValidationError "Unexisting user."
 
     modifyIORef' usersRef $
       HM.adjust

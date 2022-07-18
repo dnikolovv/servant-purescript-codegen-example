@@ -15,6 +15,8 @@ import Effectful (Eff)
 import qualified Effectful as E
 import qualified Effectful.Error.Static as ES
 import GenTypesDemo.API.Auth (APIUser)
+import GenTypesDemo.API.DomainError (DomainError)
+import qualified GenTypesDemo.API.DomainError as DomainError
 import GenTypesDemo.API.ManageUsers (ManageUsers, deleteUser, getAllUsers, getUser, newUser, updateUser)
 import GenTypesDemo.API.Types
 import RIO
@@ -47,7 +49,7 @@ type UsersTable = IORef (HashMap UserId UserData)
 
 server ::
   ManageUsers E.:> es =>
-  ES.Error ServerError E.:> es =>
+  ES.Error DomainError E.:> es =>
   ServerT UsersAPI (Eff es)
 server =
   publicServer
@@ -62,4 +64,4 @@ server =
     protectedServer (Authenticated _) uId = do
       deleteUser uId
     protectedServer _ _ =
-      ES.throwError err401
+      ES.throwError DomainError.Unauthorized
