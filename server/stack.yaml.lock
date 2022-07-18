@@ -26,6 +26,27 @@ packages:
   original:
     git: https://github.com/input-output-hk/servant-purescript.git
     commit: 002e172173ad2f2f69f98a3b56b7312364f23afe
+- completed:
+    hackage: effectful-1.0.0.0@sha256:2bd7706a82eb694d4801e194e22078b9d17de0df37d895014a94f58ca72fc493,6272
+    pantry-tree:
+      size: 2490
+      sha256: c7f828a1c06bc535c0ee30837d122f3d243bd6e7e652d17ba739d9c61b032b83
+  original:
+    hackage: effectful-1.0.0.0
+- completed:
+    hackage: effectful-core-1.0.0.0@sha256:04db3df6e435b1df037b63064e3b1bd3f7f915785b4d1b2a9f632f9368821fa2,3675
+    pantry-tree:
+      size: 1854
+      sha256: 671032384f225a7c74d450393769ea68c710f6089069324beeb74b8d23a33449
+  original:
+    hackage: effectful-core-1.0.0.0@sha256:04db3df6e435b1df037b63064e3b1bd3f7f915785b4d1b2a9f632f9368821fa2,3675
+- completed:
+    hackage: effectful-th-1.0.0.0@sha256:46842eeea2ca1ca2ab8a86302de84ec1367f4cb047e49256f386aec123b7f82b,2428
+    pantry-tree:
+      size: 327
+      sha256: 9b65d503d6e086219a551800356b773c3ee8a541b83d1a7264648365eeb48545
+  original:
+    hackage: effectful-th-1.0.0.0@sha256:46842eeea2ca1ca2ab8a86302de84ec1367f4cb047e49256f386aec123b7f82b,2428
 snapshots:
 - completed:
     size: 590100

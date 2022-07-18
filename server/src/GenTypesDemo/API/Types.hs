@@ -51,7 +51,7 @@ data UpdateUserRequest = UpdateUserRequest
 
 newtype UserId = UserId UUID
   deriving (Generic)
-  deriving newtype (Eq, Hashable, ToJSON, FromJSON, FromHttpApiData)
+  deriving newtype (Eq, Ord, Hashable, ToJSON, FromJSON, FromHttpApiData)
 
 newtype CreatedAt = CreatedAt UTCTime
   deriving (Generic)
