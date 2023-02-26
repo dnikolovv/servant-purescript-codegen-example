@@ -45,20 +45,17 @@ mkRoot ::
   m (Props -> React.JSX)
 mkRoot = do
   render <- mkRender
-  component "Root" { context, initialState, eval, render }
+  component "Root" { initialState, eval, render }
   where
-  context _ = pure unit
-
-  initialState _ _ =
+  initialState _ =
     { route: Error
     }
 
   eval =
-    Halo.mkEval
-      _
-        { onInitialize = \_ -> Just Initialize
-        , onAction = handleAction
-        }
+    Halo.mkEval Halo.defaultEval
+      { onInitialize = \_ -> Just Initialize
+      , onAction = handleAction
+      }
 
   handleAction = case _ of
     Initialize -> do

@@ -1,5 +1,5 @@
-exports.nodeEnv = process.env.NODE_ENV || "";
+export const nodeEnv = process.env.NODE_ENV || "";
 
-exports.deploymentUrl = process.env.DEPLOYMENT_URL || "";
+export const deploymentUrl = process.env.DEPLOYMENT_URL || "";
 
-exports.apiUrl = process.env.API_URL || "";
+export const apiUrl = process.env.API_URL || "";

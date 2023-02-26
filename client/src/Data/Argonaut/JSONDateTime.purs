@@ -17,9 +17,9 @@ import Effect (Effect)
 import Effect.Exception (try)
 import Effect.Now (nowDateTime)
 import Effect.Unsafe (unsafePerformEffect)
-import Text.Parsing.StringParser (Parser, runParser)
-import Text.Parsing.StringParser as Parser
-import Text.Parsing.StringParser.CodePoints (regex)
+import StringParser (Parser, runParser)
+import StringParser as Parser
+import StringParser.CodePoints (regex)
 
 newtype JSONDateTime
   = JSONDateTime DateTime

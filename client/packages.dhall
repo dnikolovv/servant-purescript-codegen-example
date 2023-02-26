@@ -116,21 +116,16 @@ let additions =
   }
 -------------------------------
 -}
-
-
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.7-20220418/packages.dhall sha256:67cc3d4f0e8fb72bb1413ba94ddd72a3ceb0783eb725e3b22ad7568b3b581163
-
--- let overrides = {
---     react-basic-hooks = upstream.react-basic-hooks // { version = "v8.0.0" }
--- }
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.7-20230224/packages.dhall
+        sha256:b9e82e6715e87e2a701e925d5d1414bff8f7e923172bf58c2d9d77b0fa81b578
 
 let overrides = {=}
 
 let jsonHelpers =
-    { json-helpers =
-      { dependencies =
-          ["arrays"
+      { json-helpers =
+        { dependencies =
+          [ "arrays"
           , "exists"
           , "profunctor"
           , "strings"
@@ -145,43 +140,40 @@ let jsonHelpers =
           , "datetime"
           , "now"
           ]
-      , repo =
-          "https://github.com/input-output-hk/purescript-bridge-json-helpers.git"
-      , version =
-          "60615c36abaee16d8dbe09cdd0e772e6d523d024"
+        , repo =
+            "https://github.com/input-output-hk/purescript-bridge-json-helpers.git"
+        , version = "0ff78186a949722f37218046a09abdf27d77ecfe"
+        }
       }
-  }
 
 let servantSupport =
-    { servant-support =
-      { dependencies =
-          ["aff"
-        , "affjax"
-        , "argonaut"
-        , "arrays"
-        , "bifunctors"
-        , "either"
-        , "http-methods"
-        , "maybe"
-        , "newtype"
-        , "nonempty"
-        , "prelude"
-        , "psci-support"
-        , "strings"
-        , "transformers"
-        , "tuples"
-        , "uri"
+      { servant-support =
+        { dependencies =
+          [ "aff"
+          , "affjax"
+          , "argonaut"
+          , "arrays"
+          , "bifunctors"
+          , "either"
+          , "http-methods"
+          , "maybe"
+          , "newtype"
+          , "nonempty"
+          , "prelude"
+          , "psci-support"
+          , "strings"
+          , "transformers"
+          , "tuples"
+          , "uri"
           ]
-      , repo =
-          "https://github.com/input-output-hk/purescript-servant-support"
-      , version =
-          "010bc7b3ea8e2707a00c23fd510201aabd4eb13f"
+        , repo = "https://github.com/input-output-hk/purescript-servant-support"
+        , version = "61f85eb0657196d4bfc80ae4736d6a6d9ebd4529"
+        }
       }
-  }
 
 let webRouter =
-  { web-router =
-      { dependencies =
+      { web-router =
+        { dependencies =
           [ "aff"
           , "effect"
           , "freet"
@@ -190,16 +182,16 @@ let webRouter =
           , "profunctor-lenses"
           , "routing"
           ]
-      , repo = "https://github.com/robertdp/purescript-web-router.git"
-      , version = "v0.3.0"
+        , repo = "https://github.com/robertdp/purescript-web-router.git"
+        , version = "v0.3.0"
+        }
       }
-  }
 
 let webAudio =
-  { web-storage =
+      { web-storage =
         { dependencies = [ "web-events", "nullable" ]
         , repo = "https://github.com/purescript-web/purescript-web-storage.git"
-        , version = "v3.0.0"
+        , version = "6b74461e136755db70c271dc898d51776363d7e2"
         }
       , webaudio =
         { dependencies =
@@ -220,4 +212,9 @@ let webAudio =
         }
       }
 
-in  upstream // overrides // jsonHelpers // servantSupport // webRouter // webAudio
+in      upstream
+    //  overrides
+    //  jsonHelpers
+    //  servantSupport
+    //  webRouter
+    //  webAudio

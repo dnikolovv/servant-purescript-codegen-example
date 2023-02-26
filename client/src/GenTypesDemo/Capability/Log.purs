@@ -13,7 +13,7 @@ class
   logMessage :: Log -> m Unit
 
 -- | This instance lets us avoid having to use `lift` when we use these functions in a component.
-instance logMessagesHalogenM :: LogMessages m => LogMessages (HaloM st act slots msg m) where
+instance logMessagesHalogenM :: LogMessages m => LogMessages (HaloM props state action m) where
   logMessage = lift <<< logMessage
 
 log :: forall m. LogMessages m => Now m => LogReason -> String -> m Unit

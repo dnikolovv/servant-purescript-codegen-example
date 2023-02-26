@@ -24,18 +24,15 @@ mkGlobalContext ::
   MonadHalo m =>
   MonadEffect m =>
   m (Unit -> React.JSX)
-mkGlobalContext = component "GlobalContext" { context, initialState, eval, render }
+mkGlobalContext = component "GlobalContext" { initialState, eval, render }
   where
-  context _ = pure unit
-
-  initialState _ _ = unit
+  initialState _ = unit
 
   eval =
-    Halo.mkEval
-      _
-        { onInitialize = \_ -> Just Initialize
-        , onAction = handleAction
-        }
+    Halo.mkEval Halo.defaultEval
+      { onInitialize = \_ -> Just Initialize
+      , onAction = handleAction
+      }
 
   handleAction a = case a of
     Initialize -> do

@@ -16,14 +16,14 @@ class
   redirect :: Route -> m Unit
   reload :: m Unit
 
-instance MonadRouting m => MonadRouting (HaloM props ctx state action m) where
+instance MonadRouting m => MonadRouting (HaloM props state action m) where
   read = lift read
   reload = lift reload
   getEmitter = lift getEmitter
   navigate = lift <<< navigate
   redirect = lift <<< redirect
 
-subscribe :: forall m props ctx state action. MonadRouting m => (Route -> action) -> HaloM props ctx state action m Unit
+subscribe :: forall m props state action. MonadRouting m => (Route -> action) -> HaloM props state action m Unit
 subscribe f = do
   emitter <- lift getEmitter
   void $ Halo.subscribe $ f <$> emitter

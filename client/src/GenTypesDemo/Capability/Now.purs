@@ -13,7 +13,7 @@ class
   nowTime :: m Time
   nowDateTime :: m DateTime
 
-instance nowHalogenM :: Now m => Now (HaloM st act slots msg m) where
+instance nowHalogenM :: Now m => Now (HaloM props state action m) where
   now = lift now
   nowDate = lift nowDate
   nowTime = lift nowTime

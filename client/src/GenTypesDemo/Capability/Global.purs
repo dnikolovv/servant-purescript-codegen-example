@@ -27,18 +27,18 @@ class Monad m <= MonadGlobal m where
   getGlobalEventsEmitter :: m (HS.Emitter GlobalEvent)
   getGlobalActionsEmitter :: m (HS.Emitter GlobalAction)
 
-instance MonadGlobal m => MonadGlobal (HaloM props ctx state action m) where
+instance MonadGlobal m => MonadGlobal (HaloM props state action m) where
   emitGlobalAction = lift <<< emitGlobalAction
   emitGlobalEvent = lift <<< emitGlobalEvent
   getGlobalEventsEmitter = lift getGlobalEventsEmitter
   getGlobalActionsEmitter = lift getGlobalActionsEmitter
 
-subscribeForGlobalEvents :: forall m props ctx state action. MonadGlobal m => (GlobalEvent -> action) -> HaloM props ctx state action m Unit
+subscribeForGlobalEvents :: forall m props state action. MonadGlobal m => (GlobalEvent -> action) -> HaloM props state action m Unit
 subscribeForGlobalEvents f = do
   emitter <- lift getGlobalEventsEmitter
   void $ Halo.subscribe $ f <$> emitter
 
-subscribeForGlobalActions :: forall m props ctx state action. MonadGlobal m => (GlobalAction -> action) -> HaloM props ctx state action m Unit
+subscribeForGlobalActions :: forall m props state action. MonadGlobal m => (GlobalAction -> action) -> HaloM props state action m Unit
 subscribeForGlobalActions f = do
   emitter <- lift getGlobalActionsEmitter
   void $ Halo.subscribe $ f <$> emitter

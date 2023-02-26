@@ -45,10 +45,11 @@
     "postcss": "^8.4.6",
     "prettier": "2.5.1",
     "process": "^0.11.10",
-    "purescript": "^0.14.7",
+    "purescript": "^0.15.7",
     "purty": "^7.0.0",
     "querystring-es3": "^0.2.1",
     "serve-static": "^1.15.0",
+    "spago": "^0.20.9",
     "tailwindcss": "^3.0.23",
     "zephyr": "https://github.com/jonasbuntinx/zephyr.git"
   }

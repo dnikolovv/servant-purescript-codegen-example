@@ -1,5 +1,5 @@
-var { ToastContainer, toast } = require('react-toastify');
+import { ToastContainer, toast } from 'react-toastify'
 
-exports.toastContainer_ = ToastContainer;
-exports.toast_ = toast;
-exports.toastError_ = toast.error;
+export const toastContainer_ = ToastContainer;
+export const toast_ = toast;
+export const toastError_ = toast.error;

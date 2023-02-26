@@ -2,6 +2,7 @@ module GenTypesDemo.Page.Home where
 
 import Prelude
 import Prelude
+
 import Control.Monad.State (get, modify_)
 import Data.Array as Array
 import Data.Array.NonEmpty (NonEmptyArray)
@@ -35,6 +36,7 @@ import React.Basic.DOM as R
 import React.Basic.DOM.Events (targetValue)
 import React.Basic.Events (handler, handler_)
 import React.Basic.Hooks as React
+import React.Halo (HaloM)
 import React.Halo as Halo
 import Web.HTML.HTMLInputElement (placeholder)
 
@@ -42,7 +44,7 @@ type Props
   = {}
 
 type State
-  = { users :: RemoteData APIError (Array User)
+  = { usersR :: RemoteData APIError (Array User)
     }
 
 data Action
@@ -60,26 +62,26 @@ mkHomePage ::
   m (Props -> React.JSX)
 mkHomePage = do
   newUserRow <- mkNewUserRow
-  component "HomePage" { context, initialState, eval, render: render newUserRow }
+  component "HomePage" { initialState, eval, render: render newUserRow }
   where
-  context _ = pure unit
-
-  initialState _ _ =
+  initialState _ =
     { usersR: RemoteData.NotAsked
     }
 
   eval =
-    Halo.mkEval
-      _
-        { onInitialize = \_ -> Just Initialize
-        , onAction = handleAction
-        }
+    Halo.mkEval Halo.defaultEval
+      { onInitialize = \_ -> Just Initialize
+      , onAction = handleAction
+      }
 
-  handleAction = case _ of
+  handleAction :: Action -> HaloM Props State Action m Unit
+  handleAction a = case a of
     Initialize -> do
       modify_ _ { usersR = RemoteData.Loading }
       usersR <- listUsers
       modify_ _ { usersR = RemoteData.fromEither usersR }
+
+      pure unit
     AddUser newUserRequest -> do
       result <- newUser newUserRequest
       case result of

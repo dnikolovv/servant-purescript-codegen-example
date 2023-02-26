@@ -14,7 +14,7 @@ class
   newUser :: CreateUserRequest -> m (Either APIError User)
   deleteUser :: UserId -> m (Either APIError Unit)
 
-instance monadUsersHalogenM :: MonadUsers m => MonadUsers (HaloM st act slots msg m) where
+instance monadUsersHalogenM :: MonadUsers m => MonadUsers (HaloM props state action m) where
   listUsers = lift listUsers
   newUser = lift <<< newUser
   deleteUser = lift <<< deleteUser

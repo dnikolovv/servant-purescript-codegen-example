@@ -26,6 +26,6 @@ withErrorContents (APIError (AjaxError { response })) action = case _.body <$> r
 withErrorContents _ _ = pure unit
 
 printAPIError :: APIError -> String
-printAPIError (APIError ajax) = printAjaxError stringify printJsonDecodeError ajax
+printAPIError (APIError ajax) = printAjaxError ajax
 
 printAPIError UnauthorizedAccess = "Unauthorized access."
